@@ -8,6 +8,8 @@ namespace BookStoreVer2.App
         {
             var db = new DbBookStore();
 
+
+
             Console.WriteLine("Hello, World!");
         }
     }

@@ -17,17 +17,17 @@ namespace BookStoreVer2.Lib
         {
         }
 
-        public virtual DbSet<Author> Authors { get; set; }
-        public virtual DbSet<Authorization> Authorizations { get; set; }
-        public virtual DbSet<Book> Books { get; set; } 
-        public virtual DbSet<BookReservation> BookReservations { get; set; } 
-        public virtual DbSet<Employee> Employees { get; set; } 
-        public virtual DbSet<Genre> Genres { get; set; } 
-        public virtual DbSet<Human> Humans { get; set; } 
-        public virtual DbSet<JobTitle> JobTitles { get; set; } 
-        public virtual DbSet<PublishingHouse> PublishingHouses { get; set; }
-        public virtual DbSet<User> Users { get; set; } 
-        public virtual DbSet<WriteOff> WriteOffs { get; set; } 
+        public virtual DbSet<Author> TableAuthors { get; set; }
+        public virtual DbSet<Authorization> TableAuthorizations { get; set; }
+        public virtual DbSet<Book> TableBooks { get; set; } 
+        public virtual DbSet<BookReservation> TableBookReservations { get; set; } 
+        public virtual DbSet<Employee> TableEmployees { get; set; } 
+        public virtual DbSet<Genre> TableGenres { get; set; } 
+        public virtual DbSet<Human> TableHumans { get; set; } 
+        public virtual DbSet<JobTitle> TableJobTitles { get; set; } 
+        public virtual DbSet<PublishingHouse> TablePublishingHouses { get; set; }
+        public virtual DbSet<User> TableUsers { get; set; } 
+        public virtual DbSet<WriteOff> TableWriteOffs { get; set; } 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -60,7 +60,7 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdHumanNavigation)
                     .WithMany(p => p.Authors)
                     .HasForeignKey(d => d.IdHuman)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("author_ibfk_1");
             });
 
@@ -88,7 +88,7 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdEmployeeNavigation)
                     .WithMany(p => p.Authorizations)
                     .HasForeignKey(d => d.IdEmployee)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("authorization_ibfk_1");
             });
 
@@ -129,19 +129,19 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdAuthorNavigation)
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.IdAuthor)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("books_ibfk_1");
 
                 entity.HasOne(d => d.IdGenreNavigation)
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.IdGenre)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("books_ibfk_3");
 
                 entity.HasOne(d => d.IdPubHouseNavigation)
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.IdPubHouse)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("books_ibfk_2");
             });
 
@@ -168,13 +168,13 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdBookNavigation)
                     .WithMany(p => p.BookReservations)
                     .HasForeignKey(d => d.IdBook)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("book_reservation_ibfk_1");
 
                 entity.HasOne(d => d.IdUserNavigation)
                     .WithMany(p => p.BookReservations)
                     .HasForeignKey(d => d.IdUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("book_reservation_ibfk_2");
             });
 
@@ -197,13 +197,13 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdHumanNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.IdHuman)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("employees_ibfk_1");
 
                 entity.HasOne(d => d.IdJobTitleNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.IdJobTitle)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("employees_ibfk_2");
             });
 
@@ -282,7 +282,7 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdHumanNavigation)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.IdHuman)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("users_ibfk_1");
             });
 
@@ -312,13 +312,13 @@ namespace BookStoreVer2.Lib
                 entity.HasOne(d => d.IdBookNavigation)
                     .WithMany(p => p.WriteOffs)
                     .HasForeignKey(d => d.IdBook)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("write_offs_ibfk_1");
 
                 entity.HasOne(d => d.IdEmployeeNavigation)
                     .WithMany(p => p.WriteOffs)
                     .HasForeignKey(d => d.IdEmployee)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("write_offs_ibfk_2");
             });
 
