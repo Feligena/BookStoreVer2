@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 /*
+ Уведомение в консоли диспетчера пакетов:
+
  Версия инструментов Entity Framework "6.0.2" старше версии среды выполнения "6.0.7". 
 Обновите инструменты для получения последних функций и исправлений 
 ошибок. См. https://aka.ms/AAc1fbw для получения дополнительной информации.
@@ -13,6 +15,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 конфигурации — см. https://go.microsoft.com/fwlink/?linkid=2131148. 
 Дополнительные рекомендации по хранению строк подключения 
 см. на странице http://go.microsoft.com/fwlink/?LinkId=723263.
+
+ С версией пакетов 6.0.2 не запускался Scaffold-DbContext
+Scaffold-DbContext "Server=localhost;Database=book_store;Uid=user;Pwd=****;" Pomelo.EntityFrameworkCore.MySql
+ это даже не та таблица....
  */
 
 namespace BookStoreVer2.Lib
