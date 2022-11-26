@@ -16,5 +16,10 @@ namespace BookStoreVer2.Lib
 
         public virtual Human IdHumanNavigation { get; set; } = null!;
         public virtual ICollection<Book> Books { get; set; }
+
+        public void AddAuthor(string lastName, string firstName, string patronimic)
+        {
+
+        }
     }
 }

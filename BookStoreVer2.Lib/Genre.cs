@@ -14,5 +14,10 @@ namespace BookStoreVer2.Lib
         public string NameGenre { get; set; } = null!;
 
         public virtual ICollection<Book> Books { get; set; }
+
+        public void AddGenre(string nameGenre)
+        {
+
+        }
     }
 }
