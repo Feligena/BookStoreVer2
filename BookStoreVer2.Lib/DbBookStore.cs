@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using DbConfigLib;
 
 namespace BookStoreVer2.Lib
 {
@@ -16,25 +17,27 @@ namespace BookStoreVer2.Lib
         {
         }
 
-        public virtual DbSet<Author> Authors { get; set; } = null!;
-        public virtual DbSet<Authorization> Authorizations { get; set; } = null!;
-        public virtual DbSet<Book> Books { get; set; } = null!;
-        public virtual DbSet<BookReservation> BookReservations { get; set; } = null!;
-        public virtual DbSet<Employee> Employees { get; set; } = null!;
-        public virtual DbSet<Genre> Genres { get; set; } = null!;
-        public virtual DbSet<Human> Humans { get; set; } = null!;
-        public virtual DbSet<JobTitle> JobTitles { get; set; } = null!;
-        public virtual DbSet<PublishingHouse> PublishingHouses { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
-        public virtual DbSet<WriteOff> WriteOffs { get; set; } = null!;
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Authorization> Authorizations { get; set; }
+        public virtual DbSet<Book> Books { get; set; } 
+        public virtual DbSet<BookReservation> BookReservations { get; set; } 
+        public virtual DbSet<Employee> Employees { get; set; } 
+        public virtual DbSet<Genre> Genres { get; set; } 
+        public virtual DbSet<Human> Humans { get; set; } 
+        public virtual DbSet<JobTitle> JobTitles { get; set; } 
+        public virtual DbSet<PublishingHouse> PublishingHouses { get; set; }
+        public virtual DbSet<User> Users { get; set; } 
+        public virtual DbSet<WriteOff> WriteOffs { get; set; } 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-              //  optionsBuilder.UseMySql("server=localhost;database=book_store;uid=user;pwd=****", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
-                optionsBuilder.UseMySql(" ", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
-            }
+            if (optionsBuilder.IsConfigured) return;
+            
+                //  optionsBuilder.UseMySql("server=localhost;database=book_store;uid=user;pwd=****", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
+                var ver = Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql");
+                var conn = DbConfig.ImportFromJson("db.json").ToString();
+                optionsBuilder.UseMySql(conn , ver);
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
