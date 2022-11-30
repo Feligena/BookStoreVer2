@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.Models
 {
     public partial class Genre
     {
@@ -14,10 +14,5 @@ namespace BookStoreVer2.Lib
         public string NameGenre { get; set; } = null!;
 
         public virtual ICollection<Book> Books { get; set; }
-
-        public void AddGenre(string nameGenre)
-        {
-
-        }
     }
 }

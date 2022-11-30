@@ -8,7 +8,7 @@ namespace BookStoreVer2.App
         {
             var db = new DbBookStore();
 
-
+            
 
             /*
             foreach (var book in db.TableBooks)

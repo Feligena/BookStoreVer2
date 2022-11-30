@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using DbConfigLib;
+using BookStoreVer2.Lib.Models;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.DB
 {
     public partial class DbBookStore : DbContext
     {
@@ -19,25 +20,25 @@ namespace BookStoreVer2.Lib
 
         public virtual DbSet<Author> TableAuthors { get; set; }
         public virtual DbSet<Authorization> TableAuthorizations { get; set; }
-        public virtual DbSet<Book> TableBooks { get; set; } 
-        public virtual DbSet<BookReservation> TableBookReservations { get; set; } 
-        public virtual DbSet<Employee> TableEmployees { get; set; } 
-        public virtual DbSet<Genre> TableGenres { get; set; } 
-        public virtual DbSet<Human> TableHumans { get; set; } 
-        public virtual DbSet<JobTitle> TableJobTitles { get; set; } 
+        public virtual DbSet<Book> TableBooks { get; set; }
+        public virtual DbSet<BookReservation> TableBookReservations { get; set; }
+        public virtual DbSet<Employee> TableEmployees { get; set; }
+        public virtual DbSet<Genre> TableGenres { get; set; }
+        public virtual DbSet<Human> TableHumans { get; set; }
+        public virtual DbSet<JobTitle> TableJobTitles { get; set; }
         public virtual DbSet<PublishingHouse> TablePublishingHouses { get; set; }
-        public virtual DbSet<User> TableUsers { get; set; } 
-        public virtual DbSet<WriteOff> TableWriteOffs { get; set; } 
+        public virtual DbSet<User> TableUsers { get; set; }
+        public virtual DbSet<WriteOff> TableWriteOffs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder.IsConfigured) return;
-            
-                //  optionsBuilder.UseMySql("server=localhost;database=book_store;uid=user;pwd=****", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
-                var ver = Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql");
-                var conn = DbConfig.ImportFromJson("db.json").ToString();
-                optionsBuilder.UseMySql(conn , ver);
-            
+
+            //  optionsBuilder.UseMySql("server=localhost;database=book_store;uid=user;pwd=****", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
+            var ver = ServerVersion.Parse("8.0.30-mysql");
+            var conn = DbConfig.ImportFromJson("db.json").ToString();
+            optionsBuilder.UseLazyLoadingProxies().UseMySql(conn, ver);
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,7 +46,7 @@ namespace BookStoreVer2.Lib
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
-            modelBuilder.Entity<Author>(entity =>
+            modelBuilder.Entity<TableAuthorsDB>(entity =>
             {
                 entity.ToTable("author");
 

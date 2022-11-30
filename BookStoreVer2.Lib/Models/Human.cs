@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.Models
 {
     public partial class Human
     {
@@ -20,14 +20,5 @@ namespace BookStoreVer2.Lib
         public virtual ICollection<Author> Authors { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<User> Users { get; set; }
-
-        public void AddHuman(string lastName, string firstName, string patronimic)
-        {
-            /*
-            FirstName = firstName;
-            LastName = lastName;    
-            Patronymic = patronimic;
-            */
-        }
     }
 }

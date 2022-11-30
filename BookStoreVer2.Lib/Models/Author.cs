@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.Models
 {
     public partial class Author
     {
@@ -16,10 +16,5 @@ namespace BookStoreVer2.Lib
 
         public virtual Human IdHumanNavigation { get; set; } = null!;
         public virtual ICollection<Book> Books { get; set; }
-
-        public void AddAuthor(string lastName, string firstName, string patronimic)
-        {
-
-        }
     }
 }

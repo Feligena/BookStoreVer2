@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.Models
 {
     public partial class User
     {

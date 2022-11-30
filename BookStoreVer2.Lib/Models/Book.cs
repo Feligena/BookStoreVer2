@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookStoreVer2.Lib
+namespace BookStoreVer2.Lib.Models
 {
     public partial class Book
     {
@@ -28,22 +28,5 @@ namespace BookStoreVer2.Lib
         public virtual PublishingHouse IdPubHouseNavigation { get; set; } = null!;
         public virtual ICollection<BookReservation> BookReservations { get; set; }
         public virtual ICollection<WriteOff> WriteOffs { get; set; }
-
-        /// <summary>
-        /// Добавление книги в таблицу
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="lastName"></param>
-        /// <param name="firstName"></param>
-        /// <param name="patronimic"></param>
-        public void AddBook(string nameBook, 
-            string lastName, string firstName, string patronimic,
-            string namePubHouse, string address, int yearPublishing,
-            string nameGenre, int numPages, int costPrice,int sellingPrice, int amount)
-        {
-
-        }
-
-        
     }
 }
