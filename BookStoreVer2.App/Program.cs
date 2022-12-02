@@ -1,4 +1,5 @@
 ﻿using BookStoreVer2.Lib;
+using BookStoreVer2.Lib.DB;
 
 namespace BookStoreVer2.App
 {
@@ -26,13 +27,13 @@ namespace BookStoreVer2.App
             {
                 Console.WriteLine(" Введите логин");
                 login = Console.ReadLine();
-                var ansLogin = db.TableAuthorizations.FirstOrDefault().Login.ToString();
+     //           var ansLogin = db.TableAuthorizations.FirstOrDefault().Login.ToString();
                 // написать проверку на поиск совподения логина и пароля в базе
                 if (login == ansLogin)
                 {
                     Console.WriteLine(" Введите пароль");
                     password = Console.ReadLine();
-                    var ansPassword = db.TableAuthorizations.FirstOrDefault().Login.ToString();
+     //               var ansPassword = db.TableAuthorizations.FirstOrDefault().Login.ToString();
 
                     if (password == ansPassword)
                     {

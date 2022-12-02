@@ -12,6 +12,7 @@ namespace BookStoreVer2.Lib.Models
 
         public int Id { get; set; }
         public string NameGenre { get; set; } = null!;
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
     }

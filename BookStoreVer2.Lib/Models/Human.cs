@@ -16,6 +16,7 @@ namespace BookStoreVer2.Lib.Models
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Author> Authors { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }

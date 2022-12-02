@@ -11,6 +11,7 @@ namespace BookStoreVer2.Lib.DB
     {
         public DbBookStore()
         {
+            
         }
 
         public DbBookStore(DbContextOptions<DbBookStore> options)
@@ -46,7 +47,7 @@ namespace BookStoreVer2.Lib.DB
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
-            modelBuilder.Entity<TableAuthorsDB>(entity =>
+            modelBuilder.Entity<Author>(entity =>
             {
                 entity.ToTable("author");
 
@@ -217,6 +218,8 @@ namespace BookStoreVer2.Lib.DB
                 entity.Property(e => e.NameGenre)
                     .HasMaxLength(255)
                     .HasColumnName("name_genre");
+
+                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
             });
 
             modelBuilder.Entity<Human>(entity =>
@@ -236,6 +239,8 @@ namespace BookStoreVer2.Lib.DB
                 entity.Property(e => e.Patronymic)
                     .HasMaxLength(100)
                     .HasColumnName("patronymic");
+
+                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
             });
 
             modelBuilder.Entity<JobTitle>(entity =>
@@ -247,6 +252,8 @@ namespace BookStoreVer2.Lib.DB
                 entity.Property(e => e.NameTitle)
                     .HasMaxLength(100)
                     .HasColumnName("name_title");
+
+                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
             });
 
             modelBuilder.Entity<PublishingHouse>(entity =>

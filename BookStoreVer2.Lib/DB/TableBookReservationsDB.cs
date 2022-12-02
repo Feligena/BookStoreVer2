@@ -7,7 +7,7 @@ using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
 {
-    public class TableBookReservationsDB
+    public static class TableBookReservationsDB
     {
         /// <summary>
         /// Поставить резерв на книгу
@@ -15,7 +15,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
-        public void AddReserve()
+        public static void AddReserve()
         {
 
         }
@@ -23,7 +23,7 @@ namespace BookStoreVer2.Lib.DB
         /// <summary>
         /// Снять резерв с книги
         /// </summary>
-        public void RemoveReserve()
+        public static void RemoveReserve()
         {
 
         }

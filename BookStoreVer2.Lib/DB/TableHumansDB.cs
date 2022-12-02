@@ -9,7 +9,13 @@ using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
 {
-    public class TableHumansDB
+    public enum KeyNameHuman
+    {
+        firstName = 1,
+        lastName
+    };
+
+    public static class TableHumansDB
     {
         /// <summary>
         /// Добавляем человека в таблицу БД
@@ -18,7 +24,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public int AddHuman(string lastName, string firstName, string patronimic)
+        public static int AddHuman(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -40,9 +46,9 @@ namespace BookStoreVer2.Lib.DB
             }
 
         }
-
+        /*
         /// <summary>
-        /// Вносит изменения в существующую запись
+        /// Вносит изменение имени существующую запись
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
@@ -51,41 +57,114 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
+                var searchHuman = SearchHuman(lastName, firstName, patronimic);
+                
                 var callTitle = from title in db.TableHumans
                                 where title.FirstName == firstName
                                 select title;
 
                 var Title = callTitle.ToList()[0];
                 Title.FirstName = "Vasa";
-
+                
+                
                 db.SaveChanges();
             }
-
         }
+        */
 
-        public void DeletedHuman(string lastName, string firstName, string patronimic)
+        /// <summary>
+        /// Вносит изменение имени в существующую запись таблицы
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        /// <param name="changeName"></param>
+        public static void UpdateFirstName(string lastName, string firstName, string patronimic, string changeName)
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var callTitle = from title in db.TableHumans
-                                where title.FirstName == firstName
-                                select title;
-
-                var Title = callTitle.ToList()[0];
-                Title.FirstName = "Vasa";
-
+                var human = db.TableHumans.ElementAt(SearchHumanId(lastName, firstName, patronimic));
+                human.FirstName = changeName;
                 db.SaveChanges();
             }
         }
 
         /// <summary>
-        /// Поиск сотрудников по имени, фамилии, отчеству
+        /// Вносит изменение фамилии в существующую запись таблицы
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        /// <param name="changeName"></param>
+        public static void UpdateLastName(string lastName, string firstName, string patronimic, string changeName)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var human = db.TableHumans.ElementAt(SearchHumanId(lastName, firstName, patronimic));
+                human.LastName = changeName;
+                db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Вносит изменение отчества в существующую запись таблицы
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        /// <param name="changeName"></param>
+        public static void UpdatePatronimic(string lastName, string firstName, string patronimic, string changeName)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var human = db.TableHumans.ElementAt(SearchHumanId(lastName, firstName, patronimic));
+                human.Patronymic = changeName;
+                db.SaveChanges();
+            }
+        }
+
+        /*
+        /// <summary>
+        /// Удаляет запись о человеке из таблицы
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        public static void DropHuman(string lastName, string firstName, string patronimic)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                db.TableHumans.Remove(db.TableHumans.ElementAt(SearchHumanId(lastName, firstName, patronimic)));      //????????
+                db.SaveChanges();
+            }
+        }
+        */
+
+        /// <summary>
+        /// Помечает запись о человеке как удаленную
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        public static void DeletedHuman(string lastName, string firstName, string patronimic)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var human = db.TableHumans.ElementAt(SearchHumanId(lastName, firstName, patronimic));
+                human.IsDeleted = true;
+                db.SaveChanges();
+            }
+                 
+        }
+
+        /// <summary>
+        /// Поиск первого человека в списке по имени, фамилии, отчеству
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public int SearchHuman(string lastName, string firstName, string patronimic)  
+        public static int SearchHumanId(string lastName, string firstName, string patronimic)  
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -94,6 +173,31 @@ namespace BookStoreVer2.Lib.DB
                                 && human.FirstName == firstName
                                 && human.Patronymic == patronimic
                                 select human;
+                if(tmp.Count() > 1)
+                    return -1; /* проверка, что получили. Если коллекция, то вызвать другой метод,
+                                 через эксепшн, что несколько таких человек есть*/
+                else
+                {
+                    var listHuman = tmp.ToList()[0];
+                    return listHuman.Id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Поиск первого человека в списке по имени, фамилии
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <returns></returns>
+        public static int SearchHumanId(string lastName, string firstName)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var tmp = from human in db.TableHumans
+                          where human.LastName == lastName
+                          && human.FirstName == firstName
+                          select human;
 
                 var listHuman = tmp.ToList()[0];
                 return listHuman.Id;
@@ -101,40 +205,103 @@ namespace BookStoreVer2.Lib.DB
         }
 
         /// <summary>
-        /// Поиск сотрудников по имени, фамилии
-        /// </summary>
-        /// <param name="lastName"></param>
-        /// <param name="firstName"></param>
-        /// <returns></returns>
-        public int SearchHuman(string lastName, string firstName)
-        {
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Поиск сотрудников по имени или фамилии
+        /// Поиск первого человека в списке по имени или фамилии
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="key"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public int SearchHuman(string lastName,int key)
+        public static int SearchHumanId(string name,KeyNameHuman key)
         {
             using (DbBookStore db = new DbBookStore())
             {
                 switch (key)
                 {
-                    case 1:
-                        break;
-                    case 2:
-                        break;
+                    case KeyNameHuman.firstName: // ищем по имени
+                        var tmp2 = from human in db.TableHumans
+                                   where human.FirstName == name
+                                   select human;
+                        var listHuman2 = tmp2.ToList()[0];
+                        return listHuman2.Id;
+                    case KeyNameHuman.lastName:// ищем по фамилии 
+                        var tmp1 = from human in db.TableHumans
+                                  where human.LastName == name
+                                  select human;
+                        var listHuman1 = tmp1.ToList()[0];
+                        return listHuman1.Id;
+
                     default: throw new ArgumentOutOfRangeException(nameof(key)); // прописать Эксепшены!
                 }
-
-                return 0;
             }
-                
+        }
+
+        /// <summary>
+        /// Поиск всех существующих людей по имени, фамилии и отчеству
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        /// <returns></returns>
+        public static IEnumerable<Human> SearchHuman(string lastName, string firstName, string patronimic)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var tmp = from human in db.TableHumans
+                          where human.LastName == lastName
+                          && human.FirstName == firstName
+                          && human.Patronymic == patronimic
+                          select human;
+                return tmp;                                        //?????
+            }
+        }
+
+        /// <summary>
+        /// Поиск всех существующих людей по имени, фамилии
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <returns></returns>
+        public static IEnumerable<Human> SearchHuman(string lastName, string firstName)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var tmp = from human in db.TableHumans
+                          where human.LastName == lastName
+                          && human.FirstName == firstName
+                          select human;
+                return tmp;
+            }
+        }
+
+        /// <summary>
+        /// Поиск всех существующих людей по имени или фамилии
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static IEnumerable<Human> SearchHuman(string name, KeyNameHuman key)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                switch (key)
+                {
+                    case KeyNameHuman.lastName:// ищем по фамилии 
+                        var tmp1 = from human in db.TableHumans
+                                   where human.LastName == name
+                                   select human;
+                        return tmp1;
+
+                    case KeyNameHuman.firstName: // ищем по имени
+                        var tmp2 = from human in db.TableHumans
+                                   where human.FirstName == name
+                                   select human;
+                        return tmp2;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(key)); // прописать Эксепшены!
+                }
+            }
+
         }
 
     }

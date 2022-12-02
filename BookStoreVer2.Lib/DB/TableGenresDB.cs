@@ -7,9 +7,9 @@ using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
 {
-    public class TableGenresDB
+    public static class TableGenresDB
     {
-        public void AddGenre(string nameGenre)
+        public static void AddGenre(string nameGenre)
         {
 
         }
