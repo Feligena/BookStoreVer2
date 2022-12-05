@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Xml;
-using BookStoreVer2.Lib.Models;
+﻿using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
 {
@@ -40,7 +33,7 @@ namespace BookStoreVer2.Lib.DB
                  return (получаем строку в коллекции, соотв. условиям лямбды)
                          .обращаемся к полям этой коллекции;
                 */
-                return (db.TableHumans.First(h => h.FirstName == firstName
+                return (db.TableHumans.Last(h => h.FirstName == firstName
                 && h.LastName == lastName
                 && h.Patronymic == patronimic)).Id;
             }
@@ -172,7 +165,8 @@ namespace BookStoreVer2.Lib.DB
                                 where human.LastName == lastName
                                 && human.FirstName == firstName
                                 && human.Patronymic == patronimic
-                                select human;
+                                && human.IsDeleted == false
+                          select human;
                 if(tmp.Count() > 1)
                     return -1; /* проверка, что получили. Если коллекция, то вызвать другой метод,
                                  через эксепшн, что несколько таких человек есть*/
@@ -183,7 +177,7 @@ namespace BookStoreVer2.Lib.DB
                 }
             }
         }
-
+        /*
         /// <summary>
         /// Поиск первого человека в списке по имени, фамилии
         /// </summary>
@@ -234,6 +228,7 @@ namespace BookStoreVer2.Lib.DB
                 }
             }
         }
+        */
 
         /// <summary>
         /// Поиск всех существующих людей по имени, фамилии и отчеству
@@ -242,7 +237,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IEnumerable<Human> SearchHuman(string lastName, string firstName, string patronimic)
+        public static IQueryable SearchHuman(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -250,8 +245,10 @@ namespace BookStoreVer2.Lib.DB
                           where human.LastName == lastName
                           && human.FirstName == firstName
                           && human.Patronymic == patronimic
+                          && human.IsDeleted == false
                           select human;
-                return tmp;                                        //?????
+                IQueryable listHuman = tmp;
+                return listHuman;                                        //?????
             }
         }
 
@@ -261,15 +258,17 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public static IEnumerable<Human> SearchHuman(string lastName, string firstName)
+        public static IQueryable SearchHuman(string lastName, string firstName)
         {
             using (DbBookStore db = new DbBookStore())
             {
                 var tmp = from human in db.TableHumans
                           where human.LastName == lastName
                           && human.FirstName == firstName
+                          && human.IsDeleted == false
                           select human;
-                return tmp;
+                IQueryable listHuman = tmp;
+                return listHuman;
             }
         }
 
@@ -280,7 +279,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="key"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static IEnumerable<Human> SearchHuman(string name, KeyNameHuman key)
+        public static IQueryable SearchHuman(string name, KeyNameHuman key)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -289,14 +288,18 @@ namespace BookStoreVer2.Lib.DB
                     case KeyNameHuman.lastName:// ищем по фамилии 
                         var tmp1 = from human in db.TableHumans
                                    where human.LastName == name
+                                   && human.IsDeleted == false
                                    select human;
-                        return tmp1;
+                        IQueryable listHuman1 = tmp1;
+                        return listHuman1;
 
                     case KeyNameHuman.firstName: // ищем по имени
                         var tmp2 = from human in db.TableHumans
                                    where human.FirstName == name
+                                   && human.IsDeleted == false
                                    select human;
-                        return tmp2;
+                        IQueryable listHuman2 = tmp2;
+                        return listHuman2;
 
                     default: throw new ArgumentOutOfRangeException(nameof(key)); // прописать Эксепшены!
                 }

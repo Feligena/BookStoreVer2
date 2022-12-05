@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿
 using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
@@ -23,9 +18,7 @@ namespace BookStoreVer2.Lib.DB
                                 where title.NameTitle == nameTitle
                                 select title;
                 if (callChack.Count() > 1)
-                {
-                    return -1;                                               //???
-                }
+                    return -1;
                 else
                 {
                     var tmp = callChack.ToList()[0];
@@ -52,7 +45,7 @@ namespace BookStoreVer2.Lib.DB
             {
                 var tmp = db.TableJobTitles.First(t => t.NameTitle == nameTitle);
                 if (tmp.NameTitle == nameTitle)
-                    Console.WriteLine($" Должность {tmp.NameTitle} уже существует\n"); // эксепшн
+                    new Exception(nameTitle); // эксепшн дописать
                 else
                 {
                     db.TableJobTitles.Add(new JobTitle { NameTitle = nameTitle });

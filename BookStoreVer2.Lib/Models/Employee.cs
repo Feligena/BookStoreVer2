@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BookStoreVer2.Lib.DB;
-
 namespace BookStoreVer2.Lib.Models
 {
     public partial class Employee

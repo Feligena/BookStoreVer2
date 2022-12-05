@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookStoreVer2.Lib.Models;
+﻿using BookStoreVer2.Lib.Models;
 
 namespace BookStoreVer2.Lib.DB
 {
@@ -37,6 +32,7 @@ namespace BookStoreVer2.Lib.DB
                 db.SaveChanges();
 
                 return SearchEmployeeId(lastName, firstName, patronimic, jobTitle);
+
             }
         }
 
@@ -75,9 +71,7 @@ namespace BookStoreVer2.Lib.DB
                         db.SaveChanges();
                         break;
                     case KeyUbdateEmployee.isDelited:
-                        var employee5 = db.TableEmployees.ElementAt(SearchEmployeeId(lastName, firstName, patronimic, jobTitle));
-                        employee5.IsDeleted = true;
-                        db.SaveChanges();
+                        DeletedEmployee(lastName, firstName, patronimic, jobTitle);
                         break;
                     default:
                         break;
@@ -85,6 +79,25 @@ namespace BookStoreVer2.Lib.DB
             }
             
         }
+
+        /// <summary>
+        /// Отмечает сотрудника как удаленного
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="patronimic"></param>
+        /// <param name="jobTitle"></param>
+        /// <returns></returns>
+        public static void DeletedEmployee(string lastName, string firstName, string patronimic, string jobTitle)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var employee5 = db.TableEmployees.ElementAt(SearchEmployeeId(lastName, firstName, patronimic, jobTitle));
+                employee5.IsDeleted = true;
+                db.SaveChanges();
+            }
+        }
+
 
         /// <summary>
         /// Поиск первого сотрудника в списке по имени, фамилии, отчеству и должности
@@ -103,7 +116,7 @@ namespace BookStoreVer2.Lib.DB
                           && e.IdJobTitle == TableJobTitlesDB.SearchJobTitle(jobTitle))).Id;
             }
         }
-
+        /*
         /// <summary>
         /// Поиск первого сотрудника в списке по имени, фамилии, отчеству
         /// </summary>
@@ -148,6 +161,7 @@ namespace BookStoreVer2.Lib.DB
                           e.IdHuman == TableHumansDB.SearchHumanId(lastName, key))).Id;
             }
         }
+        */
 
         // пробуем через навигационные поля
 
@@ -158,7 +172,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IEnumerable<Employee> SearchEmployee(string lastName, string firstName, string patronimic)
+        public static IQueryable SearchEmployee(string lastName, string firstName, string patronimic)
         {
             using(DbBookStore db = new DbBookStore())
             {
@@ -194,7 +208,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IEnumerable<Employee> SearchEmployee(string lastName, string firstName)
+        public static IQueryable SearchEmployee(string lastName, string firstName)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -229,7 +243,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IQueryable<Employee> SearchEmployee(string name, KeyNameHuman key)
+        public static IQueryable SearchEmployee(string name, KeyNameHuman key)
         {
             using (DbBookStore db = new DbBookStore())
             {
