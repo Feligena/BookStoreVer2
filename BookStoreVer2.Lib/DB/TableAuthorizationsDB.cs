@@ -2,31 +2,31 @@
 
 namespace BookStoreVer2.Lib.DB
 {
-    public class TableAuthorizationsDB
+    public static class TableAuthorizationsDB
     {
         /// <summary>
         /// ДОбавление авторизации сотрудников
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
-        public void AddEmployeeAuthorization(string lastName, string firstName, string patronimic, 
+        public static void AddEmployeeAuthorization(string lastName, string firstName, string patronimic, 
                                                 string login, string password, string jobTitle)
         {
-            int idAuthorization = SearchAuthorizationId(login);
-            if (idAuthorization == 0)
+            using (DbBookStore db = new DbBookStore())
             {
-                var authorization = new Authorization();
-                authorization.IdEmployee = TableEmployeesDB.AddEmployee(lastName, firstName, patronimic, jobTitle);
-                authorization.Login = login;
-                authorization.Password = password;
-                using (DbBookStore db = new DbBookStore())
+                var searchAuthorization = db.TableAuthorizations.Any(a => a.Login == login && a.IsDeleted == false);
+                if (!searchAuthorization)
                 {
+                    var authorization = new Authorization();
+                    authorization.IdEmployee = TableEmployeesDB.AddEmployee(lastName, firstName, patronimic, jobTitle);
+                    authorization.Login = login;
+                    authorization.Password = password;
                     db.TableAuthorizations.Add(authorization);
                     db.SaveChanges();
                 }
+                else
+                    new Exception();                     //????????????????????????
             }
-            else
-                new Exception();                     //????????????????????????
         }
 
         /// <summary>
@@ -38,11 +38,11 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="login"></param>
         /// <param name="password"></param>
         /// <param name="jobTitle"></param>
-        public void DeletedEmployeeAuthorization(string login)
+        public static void DeletedEmployeeAuthorization(string login)
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var authorization = db.TableAuthorizations.ElementAt(SearchAuthorizationId(login));
+                var authorization = db.TableAuthorizations.ElementAt(SearchAuthorizationId(login));       // ??????????
                 if (authorization.Id != 0)
                 {
                     authorization.IsDeleted = true;
@@ -58,7 +58,7 @@ namespace BookStoreVer2.Lib.DB
         /// </summary>
         /// <param name="login"></param>
         /// <returns></returns>
-        public int SearchAuthorizationId(string login)
+        public static int SearchAuthorizationId(string login)
         {
             using (DbBookStore db = new DbBookStore())
                 return db.TableAuthorizations.FirstOrDefault(a => a.Login == login 

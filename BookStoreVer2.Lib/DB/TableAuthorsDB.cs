@@ -2,7 +2,7 @@
 
 namespace BookStoreVer2.Lib.DB
 {
-    public class TableAuthorsDB
+    public static class TableAuthorsDB
     {
         /// <summary>
         /// Добавление нового Автора в БД
@@ -10,7 +10,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
-        public void AddAuthor(string lastName, string firstName, string patronimic)
+        public static void AddAuthor(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -27,7 +27,7 @@ namespace BookStoreVer2.Lib.DB
         /// <summary>
         /// Отмечает автора как удаленного
         /// </summary>
-        public void DeletedAuthor(string lastName, string firstName, string patronimic)
+        public static void DeletedAuthor(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -45,7 +45,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="patronimic"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public int SearchAuthorId(string lastName, string firstName, string patronimic)
+        public static int SearchAuthorId(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -64,7 +64,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public IQueryable SearchAuthor(string lastName, string firstName, string patronimic)
+        public static IQueryable SearchAuthor(string lastName, string firstName, string patronimic)
         {
                 return TableHumansDB.SearchHuman(lastName, firstName, patronimic);             // ????????????
         }
@@ -75,7 +75,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public IQueryable SearchAuthor(string lastName, string firstName)
+        public static IQueryable SearchAuthor(string lastName, string firstName)
         {
             return TableHumansDB.SearchHuman(lastName, firstName);
         }
@@ -86,7 +86,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="changeName"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public IQueryable SearchAuthor(string changeName, KeyNameHuman key)
+        public static IQueryable SearchAuthor(string changeName, KeyNameHuman key)
         {
             return TableHumansDB.SearchHuman(changeName, key);
         }
