@@ -61,8 +61,26 @@ namespace BookStoreVer2.Lib.DB
         public static int SearchAuthorizationId(string login)
         {
             using (DbBookStore db = new DbBookStore())
-                return db.TableAuthorizations.FirstOrDefault(a => a.Login == login 
+                return db.TableAuthorizations.First(a => a.Login == login 
                                                                 && a.IsDeleted == false).Id;
+        }
+
+        /// <summary>
+        /// Проверяет наличие зарегистрированного пользователя, и соответствие логина и пароля к его учетной записи
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static bool CheckAuthorizatoin(string login, string password)
+        {
+            using (DbBookStore db = new DbBookStore())
+            {
+                var authorization = db.TableAuthorizations.ElementAt(SearchAuthorizationId(login));
+
+                if (authorization.Login == login && authorization.Password == password)
+                    return true;
+                else return false;
+            }
         }
     }
 }

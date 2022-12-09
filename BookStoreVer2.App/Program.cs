@@ -27,34 +27,29 @@ namespace BookStoreVer2.App
             {
                 Console.WriteLine(" Введите логин");
                 login = Console.ReadLine();
-     //           var ansLogin = db.TableAuthorizations.FirstOrDefault().Login.ToString();
-                // написать проверку на поиск совподения логина и пароля в базе
-                if (login == ansLogin)
+                Console.WriteLine(" Введите пароль");
+                password = Console.ReadLine();
+
+                if (TableAuthorizationsDB.CheckAuthorizatoin(login, password))
                 {
-                    Console.WriteLine(" Введите пароль");
-                    password = Console.ReadLine();
-     //               var ansPassword = db.TableAuthorizations.FirstOrDefault().Login.ToString();
-
-                    if (password == ansPassword)
+                    do
                     {
-                        do
-                        {
-                            Console.WriteLine("  Выберите пункт меню:\n" +
-                                " 1 - Добавить книгу\n" +
-                                " 2 - Удалить книгу\n" +
-                                " 3 - Найти книгу\n" +
-                                " 4 - Редактировать параметры книги\n" +
-                                " 5 - Новинки\n" +
-                                " 6 - Самые продаваемые книги\n" +
-                                " 7 - Самые популярные авторы\n" +
-                                " 8 - Сымые популярные жанры\n");
+                        Console.WriteLine("  Выберите пункт меню:\n" +
+                            " 1 - Добавить книгу\n" +
+                            " 2 - Удалить книгу\n" +
+                            " 3 - Найти книгу\n" +
+                            " 4 - Редактировать параметры книги\n" +
+                            " 5 - Новинки\n" +
+                            " 6 - Самые продаваемые книги\n" +
+                            " 7 - Самые популярные авторы\n" +
+                            " 8 - Сымые популярные жанры\n");
 
-                        } while (answer == 0);
-                    }
+                    } while (answer == 0);
                 }
+                else 
+                    Console.WriteLine(" Не верный логин или пароль. Попробуйте снова");
+               
             } while (login == "out");
-
-            Console.WriteLine("Hello, World!");
         }
     }
 }
