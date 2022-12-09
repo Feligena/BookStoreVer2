@@ -27,5 +27,10 @@ namespace BookStoreVer2.Lib.DB
         {
 
         }
+
+        public static void SearchReserv()
+        {
+
+        }
     }
 }

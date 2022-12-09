@@ -28,15 +28,15 @@ namespace BookStoreVer2.Lib.DB
             employee.IdJobTitle = TableJobTitlesDB.SearchJobTitle(jobTitle);
             using (DbBookStore db = new DbBookStore())
             {
-                db.TableEmployees.Add(employee);                           // ????????
+                db.TableEmployees.Add(employee);                           
                 db.SaveChanges();
 
                 return SearchEmployeeId(lastName, firstName, patronimic, jobTitle);
-
+                // можно ли сделать так, чтобы только авторизация вызывала этот метод?
             }
         }
 
-        // пробуем через свои методы. + Методы расширения
+        // пробуем через свои методы.  Методы расширения
 
         /// <summary>
         /// Изменение данных сотрудника по ключу

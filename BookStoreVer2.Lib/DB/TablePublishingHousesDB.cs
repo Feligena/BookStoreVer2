@@ -91,5 +91,17 @@ namespace BookStoreVer2.Lib.DB
                                                                   && ph.IsDeleted == false).Id;
         }
 
+        /// <summary>
+        /// Поиск издательства в таблице БД
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public static int SearchPablisherId(string name)
+        {
+            using (DbBookStore db = new DbBookStore())
+                return db.TablePublishingHouses.FirstOrDefault(ph => ph.NamePubHouse == name
+                                                                  && ph.IsDeleted == false).Id;
+        }
     }
 }
