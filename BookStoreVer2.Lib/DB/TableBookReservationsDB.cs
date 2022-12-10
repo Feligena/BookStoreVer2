@@ -50,7 +50,7 @@ namespace BookStoreVer2.Lib.DB
                                                && r.IdBookNavigation.IdGenreNavigation.NameGenre == nameGenre
                                                && r.Amount == amount
                                                && r.IdUserNavigation.Phone == phone
-                                               );
+                                               && r.IsRedeem == false);
                 reserve.IsRedeem = true;
                 db.SaveChanges();
             }
@@ -85,7 +85,7 @@ namespace BookStoreVer2.Lib.DB
                                                && r.IdBookNavigation.IdGenreNavigation.NameGenre == nameGenre
                                                && r.Amount == amount
                                                && r.IdUserNavigation.Phone == phone
-                                               );
+                                               && r.IsRedeem == false);
                 reserve.IsRedeem = true;
                 var book = db.TableBooks.ElementAt(TableBooksDB.SearchBooksId(nameBook, lastName, firstName, patronimic,
                                                     namePubHouse, yearPublishing, nameGenre, numPages));
@@ -97,11 +97,12 @@ namespace BookStoreVer2.Lib.DB
         /// <summary>
         /// Поиск резерва по номеру пользователя
         /// </summary>
-        public static IQueryable SearchReserve(int phone)
+        public static IQueryable<(string NameBook, string Author, string User, int Phone, int Amount)> 
+            SearchReserve(int phone)
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var tmp = db.TableBookReservations.Where(r => r.IdUserNavigation.Phone == phone)
+                var tmp = db.TableBookReservations.Where(r => r.IdUserNavigation.Phone == phone && r.IsRedeem == false)
                                                   .Join(db.TableBooks, r => r.IdBook, b => b.Id, (r, b) => new
                                                   {
                                                       NameBook = b.NameBook,
@@ -114,19 +115,21 @@ namespace BookStoreVer2.Lib.DB
                                                       Phone = r.IdUserNavigation.Phone,
                                                       Amount = r.Amount
                                                   });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string User, int Phone, int Amount)>)tmp;
             }
         }
 
         /// <summary>
         /// Поиск резерва по названию книги и фамилии автора
         /// </summary>
-        public static IQueryable SearchReserve(string nameBook, string lastName)
+        public static IQueryable<(string NameBook, string Author, string User, int Phone, int Amount)> 
+            SearchReserve(string nameBook, string lastName)
         {
             using (DbBookStore db = new DbBookStore())
             {
                 var tmp = db.TableBookReservations.Where(r => r.IdBookNavigation.NameBook == nameBook
-                                     && r.IdBookNavigation.IdAuthorNavigation.IdHumanNavigation.LastName == lastName)
+                                     && r.IdBookNavigation.IdAuthorNavigation.IdHumanNavigation.LastName == lastName
+                                     && r.IsRedeem == false)
                                                   .Join(db.TableBooks, r => r.IdBook, b => b.Id, (r, b) => new
                                                   {
                                                       NameBook = b.NameBook,
@@ -139,7 +142,7 @@ namespace BookStoreVer2.Lib.DB
                                                       Phone = r.IdUserNavigation.Phone,
                                                       Amount = r.Amount
                                                   });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string User, int Phone, int Amount)>)tmp;
             }
         }
     }

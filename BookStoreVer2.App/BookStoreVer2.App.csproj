@@ -11,4 +11,10 @@
     <ProjectReference Include="..\BookStoreVer2.Lib\BookStoreVer2.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="db.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

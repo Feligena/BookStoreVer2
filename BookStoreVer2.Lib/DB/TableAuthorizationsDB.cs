@@ -17,15 +17,15 @@ namespace BookStoreVer2.Lib.DB
                 var searchAuthorization = db.TableAuthorizations.Any(a => a.Login == login && a.IsDeleted == false);
                 if (!searchAuthorization)
                 {
-                    var authorization = new Authorization();
-                    authorization.IdEmployee = TableEmployeesDB.AddEmployee(lastName, firstName, patronimic, jobTitle);
-                    authorization.Login = login;
-                    authorization.Password = password;
-                    db.TableAuthorizations.Add(authorization);
+                    db.TableAuthorizations.Add(new Authorization()
+                    {
+                        IdEmployee = TableEmployeesDB.AddEmployee(lastName, firstName, patronimic, jobTitle),
+                        Login = login,
+                        Password = password
+                    });
                     db.SaveChanges();
                 }
-                else
-                    new Exception();                     //????????????????????????
+                else throw new Exception();                     //????????????????????????
             }
         }
 
@@ -48,8 +48,7 @@ namespace BookStoreVer2.Lib.DB
                     authorization.IsDeleted = true;
                     db.SaveChanges();
                 }
-                else
-                    new Exception();                           // ????????????????????
+                else throw new Exception();                           // ????????????????????
             }
         }
 
@@ -61,8 +60,8 @@ namespace BookStoreVer2.Lib.DB
         public static int SearchAuthorizationId(string login)
         {
             using (DbBookStore db = new DbBookStore())
-                return db.TableAuthorizations.First(a => a.Login == login 
-                                                                && a.IsDeleted == false).Id;
+                return (db.TableAuthorizations.FirstOrDefault(a => a.Login == login 
+                                                                && a.IsDeleted == false)).Id;
         }
 
         /// <summary>
@@ -76,7 +75,7 @@ namespace BookStoreVer2.Lib.DB
             using (DbBookStore db = new DbBookStore())
             {
                 var authorization = db.TableAuthorizations.ElementAt(SearchAuthorizationId(login));
-
+  //?
                 if (authorization.Login == login && authorization.Password == password)
                     return true;
                 else return false;

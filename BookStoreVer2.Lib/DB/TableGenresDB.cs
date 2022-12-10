@@ -45,7 +45,7 @@ namespace BookStoreVer2.Lib.DB
         public static int SearchGenre(string nameGenre)
         {
             using (DbBookStore db = new DbBookStore())
-                return db.TableGenres.FirstOrDefault(g => g.NameGenre == nameGenre && g.IsDeleted == false).Id;
+                return (db.TableGenres.FirstOrDefault(g => g.NameGenre == nameGenre && g.IsDeleted == false)).Id;
         }
     }
 }

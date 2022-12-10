@@ -46,7 +46,8 @@ namespace BookStoreVer2.Lib.DB
                                                     && b.IdAuthorNavigation.IdHumanNavigation.Patronymic == patronimic
                                                     && b.IdPubHouseNavigation.NamePubHouse == namePubHouse
                                                     && b.IdPubHouseNavigation.Address == address
-                                                    && b.YearPublishing == yearPublishing);
+                                                    && b.YearPublishing == yearPublishing
+                                                    && b.IsDeleted == false);
                 if (!checkBook)
                 {
                     db.TableBooks.Add(new Book
@@ -219,7 +220,7 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                return (db.TableBooks.First(b => b.NameBook == nameBook
+                return (db.TableBooks.Single(b => b.NameBook == nameBook
                                                 && b.IdAuthorNavigation.IdHumanNavigation.LastName == lastName
                                                 && b.IdAuthorNavigation.IdHumanNavigation.FirstName == firstName
                                                 && b.IdAuthorNavigation.IdHumanNavigation.Patronymic == patronimic
@@ -243,7 +244,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)> 
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                    string namePubHouse, int yearPublishing, string nameGenre, int numPages)
         {
             using (DbBookStore db = new DbBookStore())
@@ -297,7 +299,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -314,7 +316,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)> 
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                    string namePubHouse, int yearPublishing, string nameGenre)
         {
             using (DbBookStore db = new DbBookStore())
@@ -367,7 +370,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -384,7 +387,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                    string namePubHouse, int yearPublishing, int numPages)
         {
             using (DbBookStore db = new DbBookStore())
@@ -437,7 +441,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -454,7 +458,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                    string namePubHouse, string nameGenre, int numPages)
         {
             using (DbBookStore db = new DbBookStore())
@@ -507,7 +512,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -523,7 +528,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                     int yearPublishing, string nameGenre, int numPages)
         {
             using (DbBookStore db = new DbBookStore())
@@ -576,7 +582,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -592,7 +598,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string namePubHouse, int yearPublishing, string nameGenre, int numPages)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string namePubHouse, int yearPublishing, string nameGenre, int numPages)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -642,7 +649,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -658,7 +665,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic,
                                    string namePubHouse, string nameGenre)
         {
             using (DbBookStore db = new DbBookStore())
@@ -710,7 +718,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -726,7 +734,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string nameGenre)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string nameGenre)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -774,7 +783,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -790,7 +799,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string nameGenre)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string nameGenre)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -837,7 +847,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -853,7 +863,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="nameGenre"></param>
         /// <param name="numPages"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string nameBook, string lastName, string firstName, string patronimic)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string nameBook, string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -902,7 +913,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp;
             }
         }
 
@@ -913,7 +924,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="nameGenre"></param>
         /// <returns></returns>
-        public static IQueryable SearchBooks(string strSearch, KeySearchBook key)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>
+            SearchBooks(string strSearch, KeySearchBook key)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -962,7 +974,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp1;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp1;
                         
                     case KeySearchBook.firstNameAutor:
                         var tmp2 = db.TableBooks.Where(b =>b.IdAuthorNavigation.IdHumanNavigation.FirstName == strSearch
@@ -1007,7 +1019,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp2;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp2;
                         
                     case KeySearchBook.lastNameAutor:
                         var tmp3 = db.TableBooks.Where(b => b.IdAuthorNavigation.IdHumanNavigation.LastName == strSearch
@@ -1052,7 +1064,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp3;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp3;
                         
                     case KeySearchBook.patronimicAutor:
                         var tmp4 = db.TableBooks.Where(b => b.IdAuthorNavigation.IdHumanNavigation.Patronymic == strSearch
@@ -1097,7 +1109,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp4;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp4;
                         
                     case KeySearchBook.namePublisher:
                         var tmp5 = db.TableBooks.Where(b => b.IdPubHouseNavigation.NamePubHouse == strSearch
@@ -1142,7 +1154,7 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp5;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp5;
                         
                     case KeySearchBook.nameGenre:
                         var tmp6 = db.TableBooks.Where(b => b.IdGenreNavigation.NameGenre == strSearch
@@ -1187,9 +1199,9 @@ namespace BookStoreVer2.Lib.DB
                                                   Genre = g.NameGenre,
                                                   NumPages = b.NumPages,
                                               });
-                        return tmp6;
+                        return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, string Genre, int NumPages)>)tmp6;
 
-                    default: throw new Exception();
+                    default: throw new Exception();                // ????????????????????
                 }
             }
         }

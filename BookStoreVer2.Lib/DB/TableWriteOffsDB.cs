@@ -42,7 +42,8 @@ namespace BookStoreVer2.Lib.DB
         /// <summary>
         /// Поиск списаной книги по всем параметрам
         /// </summary>
-        public static IQueryable SearchWriteOffs(string nameBook, string lastName, string firstName, string patronimic,
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)>
+            SearchWriteOffs(string nameBook, string lastName, string firstName, string patronimic,
                                 string namePubHouse, int yearPublishing, string nameGenre, int numPages,
                                 string lastNameEmployee, string firstNameEmployee, string patronimicEmployee, string jobTitle)
         {
@@ -84,14 +85,15 @@ namespace BookStoreVer2.Lib.DB
                                                            e.IdHumanNavigation.Patronymic,
                                                 JobTitle = e.IdJobTitleNavigation.NameTitle
                                             });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)>)tmp;
             }
         }
 
         /// <summary>
         /// Поиск списаной книги по названию и автору
         /// </summary>
-        public static IQueryable SearchWriteOffs(string nameBook, string lastName, string firstName, string patronimic)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)>
+            SearchWriteOffs(string nameBook, string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -123,7 +125,7 @@ namespace BookStoreVer2.Lib.DB
                                                            e.IdHumanNavigation.Patronymic,
                                                 JobTitle = e.IdJobTitleNavigation.NameTitle
                                             });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)>)tmp;
             }
         }
 
@@ -131,7 +133,8 @@ namespace BookStoreVer2.Lib.DB
         /// <summary>
         /// Поиск списаной книги по сотруднику, проводившему списание
         /// </summary>
-        public static IQueryable SearchWriteOffs(string lastNameEmployee, string firstNameEmployee, string jobTitle)
+        public static IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)> 
+            SearchWriteOffs(string lastNameEmployee, string firstNameEmployee, string jobTitle)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -162,7 +165,7 @@ namespace BookStoreVer2.Lib.DB
                                                            e.IdHumanNavigation.Patronymic,
                                                 JobTitle = e.IdJobTitleNavigation.NameTitle
                                             });
-                return tmp;
+                return (IQueryable<(string NameBook, string Author, string Publisher, int YearPublishing, int NumberPages, string Employee, string JobTitle)>)tmp;
             }
         }
 

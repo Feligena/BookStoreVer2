@@ -7,18 +7,7 @@ namespace BookStoreVer2.App
     {
         static void Main(string[] args)
         {
-            var db = new DbBookStore();
-
-            
-
-            /*
-            foreach (var book in db.TableBooks)
-            {
-                Console.WriteLine($"{book.NameBook} " +
-                    $"{book.IdAuthorNavigation.IdHumanNavigation.LastName} " +
-                    $"{book.IdAuthorNavigation.IdHumanNavigation.FirstName}");
-            }
-            */
+            //var db = new DbBookStore();
 
             string login;
             string password;
@@ -50,6 +39,17 @@ namespace BookStoreVer2.App
                     Console.WriteLine(" Не верный логин или пароль. Попробуйте снова");
                
             } while (login == "out");
+
+
+            //пример работы с анонимным классом
+            var employeeShow = TableEmployeesDB.SearchEmployee("Anonim", "anonimus", "Anonimov");
+
+            foreach (var item in employeeShow)
+            {
+                Console.WriteLine($" {item.LastName}, {item.FirstName}, {item.Patronimic}, {item.JobTitle}");
+            }
+
         }
+
     }
 }

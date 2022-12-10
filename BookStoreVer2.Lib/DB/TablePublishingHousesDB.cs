@@ -86,9 +86,9 @@ namespace BookStoreVer2.Lib.DB
         public static int SearchPablisherId(string name, string address)
         {
             using (DbBookStore db = new DbBookStore())
-                return db.TablePublishingHouses.FirstOrDefault(ph => ph.NamePubHouse == name 
+                return (db.TablePublishingHouses.FirstOrDefault(ph => ph.NamePubHouse == name 
                                                                   && ph.Address == address
-                                                                  && ph.IsDeleted == false).Id;
+                                                                  && ph.IsDeleted == false)).Id;
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace BookStoreVer2.Lib.DB
         public static int SearchPablisherId(string name)
         {
             using (DbBookStore db = new DbBookStore())
-                return db.TablePublishingHouses.FirstOrDefault(ph => ph.NamePubHouse == name
-                                                                  && ph.IsDeleted == false).Id;
+                return (db.TablePublishingHouses.FirstOrDefault(ph => ph.NamePubHouse == name
+                                                                  && ph.IsDeleted == false)).Id;
         }
     }
 }

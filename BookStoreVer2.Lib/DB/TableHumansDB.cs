@@ -21,7 +21,7 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                db.TableHumans.Add(new Human
+                db.TableHumans.Add(new Human()
                 {
                     FirstName = firstName,
                     LastName = lastName,
@@ -29,13 +29,10 @@ namespace BookStoreVer2.Lib.DB
                 });
                 db.SaveChanges();
 
-                /*
-                 return (получаем строку в коллекции, соотв. условиям лямбды)
-                         .обращаемся к полям этой коллекции;
-                */
                 return (db.TableHumans.Last(h => h.FirstName == firstName
-                && h.LastName == lastName
-                && h.Patronymic == patronimic)).Id;
+                                              && h.LastName == lastName
+                                              && h.Patronymic == patronimic
+                                              && h.IsDeleted == false)).Id;
             }
 
         }
@@ -237,7 +234,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IQueryable SearchHuman(string lastName, string firstName, string patronimic)
+        public static IEnumerable<Human> SearchHuman(string lastName, string firstName, string patronimic)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -247,8 +244,8 @@ namespace BookStoreVer2.Lib.DB
                           && human.Patronymic == patronimic
                           && human.IsDeleted == false
                           select human;
-                IQueryable listHuman = tmp;
-                return listHuman;                                        //?????
+
+                return tmp.AsEnumerable<Human>();    
             }
         }
 
@@ -258,7 +255,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public static IQueryable SearchHuman(string lastName, string firstName)
+        public static IEnumerable<Human> SearchHuman(string lastName, string firstName)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -267,8 +264,8 @@ namespace BookStoreVer2.Lib.DB
                           && human.FirstName == firstName
                           && human.IsDeleted == false
                           select human;
-                IQueryable listHuman = tmp;
-                return listHuman;
+
+                return tmp.AsEnumerable<Human>();
             }
         }
 
@@ -279,7 +276,7 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="key"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static IQueryable SearchHuman(string name, KeyNameHuman key)
+        public static IEnumerable<Human> SearchHuman(string name, KeyNameHuman key)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -290,16 +287,16 @@ namespace BookStoreVer2.Lib.DB
                                    where human.LastName == name
                                    && human.IsDeleted == false
                                    select human;
-                        IQueryable listHuman1 = tmp1;
-                        return listHuman1;
+                        
+                        return tmp1.AsEnumerable<Human>();
 
                     case KeyNameHuman.firstName: // ищем по имени
                         var tmp2 = from human in db.TableHumans
                                    where human.FirstName == name
                                    && human.IsDeleted == false
                                    select human;
-                        IQueryable listHuman2 = tmp2;
-                        return listHuman2;
+                        
+                        return tmp2.AsEnumerable<Human>();
 
                     default: throw new ArgumentOutOfRangeException(nameof(key)); // прописать Эксепшены!
                 }

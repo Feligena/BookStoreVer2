@@ -23,7 +23,7 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var searchPhone = db.TableUsers.Any(u => u.Phone == phone);
+                var searchPhone = db.TableUsers.Any(u => u.Phone == phone && u.IsDeleted == false);
                 if (!searchPhone)
                 {
                     db.TableUsers.Add(new User
@@ -76,7 +76,7 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var searchPhone = db.TableUsers.Any(u => u.Phone == changPhone);
+                var searchPhone = db.TableUsers.Any(u => u.Phone == changPhone && u.IsDeleted == false);
                 if (!searchPhone)
                 {
                     var user = db.TableUsers.ElementAt(SearchUserId(phone));

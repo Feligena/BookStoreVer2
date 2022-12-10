@@ -16,6 +16,7 @@ namespace BookStoreVer2.Lib.DB
             {
                 var callChack = from title in db.TableJobTitles
                                 where title.NameTitle == nameTitle
+                                && title.IsDeleted == false
                                 select title;
                 if (callChack.Count() > 1)
                     return -1;
@@ -43,14 +44,14 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                var tmp = db.TableJobTitles.First(t => t.NameTitle == nameTitle);
-                if (tmp.NameTitle == nameTitle)
-                    new Exception(nameTitle); // эксепшн дописать
-                else
+                var checkTitle = db.TableJobTitles.Any(t => t.NameTitle == nameTitle && t.IsDeleted == false);
+                if (!checkTitle)
                 {
                     db.TableJobTitles.Add(new JobTitle { NameTitle = nameTitle });
                     db.SaveChanges();
                 }
+                    
+                else new Exception(nameTitle); // эксепшн дописать
             }
         }
 

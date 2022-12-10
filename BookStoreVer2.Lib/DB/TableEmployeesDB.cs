@@ -9,8 +9,7 @@ namespace BookStoreVer2.Lib.DB
             firstName = 1,
             lastName,
             patronimic,
-            jobTitle,
-            isDelited
+            jobTitle
         };
 
         /// <summary>
@@ -23,12 +22,13 @@ namespace BookStoreVer2.Lib.DB
         /// <returns></returns>
         public static int AddEmployee(string lastName, string firstName, string patronimic, string jobTitle)
         {
-            var employee = new Employee();
-            employee.IdHuman = TableHumansDB.AddHuman(lastName, firstName, patronimic);
-            employee.IdJobTitle = TableJobTitlesDB.SearchJobTitle(jobTitle);
             using (DbBookStore db = new DbBookStore())
             {
-                db.TableEmployees.Add(employee);                           
+                db.TableEmployees.Add(new Employee()
+                {
+                    IdHuman = TableHumansDB.AddHuman(lastName, firstName, patronimic),
+                    IdJobTitle = TableJobTitlesDB.SearchJobTitle(jobTitle)
+                });
                 db.SaveChanges();
 
                 return SearchEmployeeId(lastName, firstName, patronimic, jobTitle);
@@ -70,14 +70,10 @@ namespace BookStoreVer2.Lib.DB
                         employee4.IdJobTitle = TableJobTitlesDB.SearchJobTitle(jobTitle);
                         db.SaveChanges();
                         break;
-                    case KeyUbdateEmployee.isDelited:
-                        DeletedEmployee(lastName, firstName, patronimic, jobTitle);
-                        break;
-                    default:
-                        break;
+                    default: throw new Exception();           // ??????????????????????????????
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -111,11 +107,13 @@ namespace BookStoreVer2.Lib.DB
         {
             using (DbBookStore db = new DbBookStore())
             {
-                return (db.TableEmployees.First(e => 
-                          e.IdHuman == TableHumansDB.SearchHumanId(lastName, firstName, patronimic) 
-                          && e.IdJobTitle == TableJobTitlesDB.SearchJobTitle(jobTitle))).Id;
+                return (db.TableEmployees.First(e =>
+                          e.IdHuman == TableHumansDB.SearchHumanId(lastName, firstName, patronimic)
+                          && e.IdJobTitle == TableJobTitlesDB.SearchJobTitle(jobTitle)
+                          && e.IsDeleted == false)).Id;
             }
         }
+       
         /*
         /// <summary>
         /// Поиск первого сотрудника в списке по имени, фамилии, отчеству
@@ -172,32 +170,34 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IQueryable SearchEmployee(string lastName, string firstName, string patronimic)
+        public static IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)> 
+             SearchEmployee(string lastName, string firstName, string patronimic)
         {
             using(DbBookStore db = new DbBookStore())
             {
-                var tmp = db.TableEmployees.Where(e => e.IdHumanNavigation.LastName == lastName
-                                                    && e.IdHumanNavigation.FirstName == firstName 
-                                                    && e.IdHumanNavigation.Patronymic == patronimic 
-                                                    && e.IsDeleted == false)
-                                           .Join(db.TableHumans,
-                                           e => e.IdHuman, h => h.Id,
-                                           (e, h) => new
-                                           {
-                                               FirstName = h.FirstName,
-                                               LastName = h.LastName,
-                                               Patronymic = h.Patronymic,
-                                               JobTitle = e.IdJobTitle
-                                           })
-                                           .Join(db.TableJobTitles,
-                                           e => e.JobTitle, j => j.Id,
-                                           (e, j) => new {
-                                               FirstName = e.FirstName,
-                                               LastName = e.LastName,
-                                               Patronymic = e.Patronymic,
-                                               JobTitle = j.NameTitle
-                                           });
-                return tmp;
+                  var tmp = db.TableEmployees.Where(e => e.IdHumanNavigation.LastName == lastName
+                                                      && e.IdHumanNavigation.FirstName == firstName
+                                                      && e.IdHumanNavigation.Patronymic == patronimic
+                                                      && e.IsDeleted == false)
+                                             .Join(db.TableHumans,
+                                             e => e.IdHuman, h => h.Id,
+                                             (e, h) => new
+                                             {
+                                                 FirstName = h.FirstName,
+                                                 LastName = h.LastName,
+                                                 Patronymic = h.Patronymic,
+                                                 JobTitle = e.IdJobTitle
+                                             })
+                                             .Join(db.TableJobTitles,
+                                             e => e.JobTitle, j => j.Id,
+                                             (e, j) => new
+                                             {
+                                                 FirstName = e.FirstName,
+                                                 LastName = e.LastName,
+                                                 Patronymic = e.Patronymic,
+                                                 JobTitle = j.NameTitle
+                                             });
+                return (IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)>)tmp;
             }
         }
 
@@ -208,7 +208,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IQueryable SearchEmployee(string lastName, string firstName)
+        public static IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)> 
+            SearchEmployee(string lastName, string firstName)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -232,7 +233,7 @@ namespace BookStoreVer2.Lib.DB
                                                Patronymic = e.Patronymic,
                                                JobTitle = j.NameTitle
                                            });
-                return tmp;
+                return (IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)>)tmp;
             }
         }
 
@@ -243,7 +244,8 @@ namespace BookStoreVer2.Lib.DB
         /// <param name="firstName"></param>
         /// <param name="patronimic"></param>
         /// <returns></returns>
-        public static IQueryable SearchEmployee(string name, KeyNameHuman key)
+        public static IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)> 
+            SearchEmployee(string name, KeyNameHuman key)
         {
             using (DbBookStore db = new DbBookStore())
             {
@@ -269,7 +271,7 @@ namespace BookStoreVer2.Lib.DB
                                                                 Patronymic = e.Patronymic,
                                                                 JobTitle = j.NameTitle });
                                                 
-                        return tmpFirstName;                        // ??????????????????????????????????
+                        return (IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)>)tmpFirstName;  
 
                     case KeyNameHuman.lastName:
                         var tmpLastName = db.TableEmployees.Where(e => e.IdHumanNavigation.LastName == name 
@@ -291,8 +293,9 @@ namespace BookStoreVer2.Lib.DB
                                                                Patronymic = e.Patronymic,
                                                                JobTitle = j.NameTitle
                                                            });
-                        return tmpLastName;                        // ?????????????????????????????????????
-                    default: throw new ArgumentOutOfRangeException(nameof(key));
+                        return (IQueryable<(string FirstName, string LastName, string Patronimic, string JobTitle)>)tmpLastName;      
+                    
+                    default: throw new Exception();           // ?????????????????????????????????????
                 }
             }
         }
